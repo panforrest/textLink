@@ -11,6 +11,7 @@ router.get('/', function(req, res, next){  //router.get('/:url', function(req, r
 			confirmation: 'fail',
 			message: 'please enter an url'
 		})
+		return
 	}
 
     superagent
@@ -26,10 +27,34 @@ router.get('/', function(req, res, next){  //router.get('/:url', function(req, r
     	return
     }
 
-
     var html = response.text
+    var props = ['og:title', 'og:description', 'og:image']
+    var metaData = {}
 
-    res.send(html)     //send.json({
+    $ = cheerio.load(html)   //$ = cheerio(html)
+
+    $('meta').each(function(i, meta){      //function(key, i)
+    	if (meta.attribs != null){           //if (meta.attribs != -1){
+    		var attribs = meta.attribs          //var prop = meta.attribs
+    		if (attribs.property != null) {             //if (prop.keys !=-1) {
+    			var prop = attribs.property        //var keys = props.keys
+    			if (props.indexOf(prop) != -1) {                 //if (keys > 0) {
+    				var key = prop.replace('og:', '')          //props.replace('og:', '')
+    				metaData[key] = attribs.content            //key = meta.content
+    			} 
+    		}
+    	}
+    })   //IF IN WRONG LINE, WILL CAUSE: Error: Can't set headers after they are sent.
+    	metaData['url'] = url
+    	res.json({
+    		confirmation: 'success',
+    		tags: metaData     //metaData: metaData
+    	})
+    // })  
+
+
+
+    // res.send(html)     //send.json({
     })     //MAKE SURE "})" IS AT THE RIGHT LOCATION, OTHERWISE ReferenceError: response is not defined     
 
 })
