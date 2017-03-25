@@ -5,7 +5,13 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
+    <h1>Add Bookmark</h1>
+    <form action="/api/bookmark" method="post">
+    	<input type="text" name="title" placeholder="Title" /><br />
+    	<input type="text" name="url" placeholder="Url" /><br />
+    	<input type="text" name="description" placeholder="Description" /><br />
+    	<input type="submit" value="Submit" />
+
+    </form>
   </body>
 </html>

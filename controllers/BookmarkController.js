@@ -9,7 +9,12 @@ module.exports = {
     				reject(err)
     				return     //FOR GOT ONE THOUSAND AND ONE TIMES
     			}
-    			resolve(bookmarks)
+
+    			var list = []
+    			bookmarks.forEach(function(bookmark, i){
+    				list.push(bookmark.summary())
+    			})
+    			resolve(list)
     		})
 
     	})
@@ -17,7 +22,7 @@ module.exports = {
 
     getById: function(id){
     	return new Promise(function(resolve, reject){
-    		Bookmark.findById(id, null, function(err, bookmark){
+    		Bookmark.findById(id, function(err, bookmark){
     			if (err){
     				reject(new Error('Bookmark Not Found'))
     				return
@@ -27,19 +32,19 @@ module.exports = {
     				reject(new Error('Bookmark Not Found'))
     				return
     			}
-    			resolve(bookmark)
+    			resolve(bookmark.summary())    //resolve(bookmark.summary())
     		})
     	})
     },
 
     create: function(params){
     	return new Promise(function(resolve, reject){
-    		Bookmark.create(params, null, function(err, bookmark){
+    		Bookmark.create(params, function(err, bookmark){
     			if (err){
     				reject(err)
     				return
     			}
-    			resolve(bookmark)
+    			resolve(bookmark.summary())
     		})
     	})
     }
